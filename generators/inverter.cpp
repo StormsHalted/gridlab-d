@@ -2256,8 +2256,16 @@ TIMESTAMP inverter::presync(TIMESTAMP t0, TIMESTAMP t1)
 				}
 
 				//Threshold checks
-
-				if (max_charge_rate == 0)
+				
+				if (max_charge_rate <0)
+				{
+					gl_warning("inverter:%s - max_charge_rate is negative!",obj->name);
+					/*  TROUBLESHOOT
+					The max_charge_rate for the inverter is negative.  Please specify
+					a valid charge rate for the object to continue.
+					*/
+				}
+				else if (max_charge_rate == 0)
 				{
 					gl_warning("inverter:%s - max_charge_rate is zero",obj->name);
 					/*  TROUBLESHOOT
@@ -2266,10 +2274,11 @@ TIMESTAMP inverter::presync(TIMESTAMP t0, TIMESTAMP t1)
 					value.
 					*/
 				}
+				
 
 				if (max_discharge_rate <0)
 				{
-					GL_THROW("inverter:%s - max_discharge_rate is negative!",obj->name);
+					gl_warning("inverter:%s - max_discharge_rate is negative!",obj->name);
 					/*  TROUBLESHOOT
 					The max_discharge_rate for the inverter is negative.  Please specify
 					a valid discharge rate for the object to continue.
